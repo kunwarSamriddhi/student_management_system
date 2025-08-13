@@ -1,6 +1,6 @@
 <?php
-  // session_start();
-  // $errors = $_SESSION['errors'] ?? [];
+  session_start();
+  $errors = $_SESSION['errors'] ?? [];
 ?>
 
 <div class="register-box">
@@ -11,6 +11,17 @@
       <div class="card">
         <div class="card-body register-card-body">
           <p class="register-box-msg">Register a new membership</p>
+          <?php if(!empty($errors)):?>
+    <div style="color:red;">
+        <h2>Error:</h2>
+        <ul>
+            <?php foreach($errors as $error):?>
+                <li><?php echo htmlspecialchars($error);?></li>
+                <?php endforeach; ?>
+        </ul>
+    </div>
+
+    <?php endif; ?>
 
           <form action="./function/register.php" method="post">
             <div class="input-group mb-3">
@@ -20,7 +31,7 @@
               </div>
             </div>
             <div class="input-group mb-3">
-              <input type="" class="form-control" placeholder="Email" id="email" name="email" />
+              <input type="email" class="form-control" placeholder="Email" id="email" name="email" />
               <div class="input-group-text">
                 <span class="bi bi-envelope"></span>
               </div>

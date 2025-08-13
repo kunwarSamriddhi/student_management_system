@@ -3,7 +3,7 @@
     session_start();
 
     $errors = [];
-    // $result = '';
+    $result = '';
 
     if($_SERVER["REQUEST_METHOD"]=="POST"){
         $name= filter_input(INPUT_POST,'name',FILTER_SANITIZE_STRING);
@@ -27,8 +27,14 @@
         }
         elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
             $errors[]="Please enter a valid email address";
+        }else{
+            $result = mysqli_query($conn,"SELECT email FROM users WHERE email = '$email'");
+            if(mysqli_num_rows($result)>0){
+                $errors[] = "Email is already registered";
+            }
         }
-
+        
+        // password validation
         if(empty($password)){
             $errors[]="Password is required";
         }
@@ -43,11 +49,11 @@
             $errors[]="Passwords don't match";
         }
     }
-    /* if(!empty($errors)){
+    if(!empty($errors)){
         $_SESSION['errors']=$errors;
         header("Location:../signup.php");
         exit();
-    } */
+    }
 
 ?>
 
@@ -61,18 +67,7 @@
 </head>
 <body>
     <h1>Form Submitted Data</h1>
-    <?php
-    if(!empty($errors)):?>
-    <div style="color:red;">
-        <h2>Error:</h2>
-        <ul>
-            <?php foreach($errors as $error):?>
-                <li><?php echo htmlspecialchars($error);?></li>
-                <?php endforeach; ?>
-        </ul>
-    </div>
-
-    <?php endif; ?>
+    
 </body>
 </html>
 
