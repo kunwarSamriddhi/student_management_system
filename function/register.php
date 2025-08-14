@@ -49,27 +49,26 @@
             $errors[]="Passwords don't match";
         }
     }
-    if(!empty($errors)){
-        $_SESSION['errors']=$errors;
-        header("Location:../signup.php");
-        exit();
+    if(empty($errors)){
+        $password=password_hash($password,PASSWORD_DEFAULT);
+        $query = "INSERT INTO users (name,email,password) VALUES('$name','$email','$password')";
+
+        if(mysqli_query($conn,$query)){
+            header('Location: ../login.php?success=1');
+            session_unset();
+            exit();
+        }else{
+            $errors[]='Failed to register:' . mysqli_error($conn);
+        }
+
     }
+
+    $_SESSION['errors']=$errors;
+    header("Location:../signup.php");
+    exit();
 
 ?>
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form data</title>
-</head>
-<body>
-    <h1>Form Submitted Data</h1>
-    
-</body>
-</html>
 
 <!-- 
  $query = "INSERT INTO users(name,email,dob,bio,country,suscribe) VALUE('$name','$email','$password','$c_password')";
