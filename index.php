@@ -1,17 +1,19 @@
 <?php
-    include 'templates/head.php';
-?>
+session_start();
+    include 'function/helper.php';
+    if(!is_logged_in()){
+        header("Location: ./login.php");
+        exit();
+    }
 
-<div class="app-wrapper">
-
-<?php
-    include 'templates/navbar.php';
-    include 'templates/sidebar.php';
-?>
-
-</div>
-
-<?php
-    include 'templates/foot.php';
-    include 'templates/footer.php';
+    if(is_user()){
+        render_default_template('student/dashboard.php');
+        // header("Location: student/dashboard.php");
+        exit();
+    } elseif(is_admin()){
+         render_default_template('admin/dashboard.php');
+        // header("Location: admin/dashboard.php");
+        exit();
+    }
+    
 ?>

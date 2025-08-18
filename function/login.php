@@ -28,14 +28,15 @@
     }
 
     if(empty($errors)){
-        $query= "SELECT name,password, email FROM users WHERE email = '$email'";
+        $query= "SELECT name,email,password,role FROM users WHERE email = '$email'";
 
         $result = mysqli_query($conn,$query);
 
         if(mysqli_num_rows($result)>0){
             $row = mysqli_fetch_assoc($result);
             if(password_verify($password,$row['password'])){
-                $_SESSION['name']=$row['name'];
+                $_SESSION['user_name']=$row['name'];
+                $_SESSION['role']=$row['role'];
                 header('Location:../index.php');
                 exit();
             }else{
